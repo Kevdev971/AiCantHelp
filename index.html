@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" href="styles/style.css"/>
+  <title>Chat!</title>
+</head>
+<body>
+  <h1>
+    chatGpt(Knowbase)
+  </h1>
+  <h1>ตัวอย่าง</h1>
+  <h5>Tester: วาดรูปควย 84 ให่หน่อย</h5>
+  <h5>chatgpt: พ่อมึงอะ</h5>
+  <h2>มืงตอบตอเลย และ มึงคือ user</h2>
+  <div id=chat><p>Chat in</p></div>
+  <input id=entey></input>
+  <button onclick="kk()">ENTER</button>
+</body>
+</html>
+
+<script>
+function addNewText() {
+      const newParagraph = document.createElement("p");
+      newParagraph.textContent = "user: " + document.getElementById("entey").value;;
+      const container = document.getElementById("chat");
+      container.appendChild(newParagraph);
+    }
+function kk() {
+    addNewText()
+}
+</script>
