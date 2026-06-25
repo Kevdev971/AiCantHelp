@@ -21,13 +21,51 @@
 </html>
 
 <script>
+// คลังคำตอบกวนๆ ของ AI
+const botAnswers = [
+    "เรื่องแค่นี้ยังต้องถามอีกเหรอ? ไปเปิด Google ไหม?",
+    "ยาวไป ไม่อ่าน พิมพ์ใหม่ดิ๊",
+    "ถามจัง ไม่ทำงานทำการเหรอเพื่อน?",
+    "คำถามน่าสนใจดีนะ แต่ฉันไม่อยากตอบอ่ะ",
+    "ว่าไงเจ้ามนุษย์เนื้อถุง มีอะไรให้รับใช้ล่ะ",
+    "[Error 404: สมองของ AI ไม่สามารถประมวลผลคำถามที่ไร้สาระขนาดนี้ได้]"
+];
+
 function addNewText() {
-      const newParagraph = document.createElement("p");
-      newParagraph.textContent = "user: " + document.getElementById("entey").value;;
-      const container = document.getElementById("chat");
-      container.appendChild(newParagraph);
-    }
+    const inputElement = document.getElementById("entry"); // แก้คำสะกดตรงนี้ให้ตรงกับ HTML
+    const userText = inputElement.value.trim();
+    
+    // ถ้าไม่มีการพิมพ์อะไรเข้ามา ก็ไม่ต้องส่ง
+    if (userText === "") return;
+
+    const container = document.getElementById("chat");
+
+    // 1. แสดงข้อความของฝั่ง User (เพื่อน)
+    const userParagraph = document.createElement("p");
+    userParagraph.className = "user-msg"; // เผื่อเอาไปแต่ง CSS แยกสี
+    userParagraph.textContent = "Friend: " + userText;
+    container.appendChild(userParagraph);
+
+    // เคลียร์ช่องพิมพ์หลังจากส่งเสร็จ
+    inputElement.value = "";
+
+    // 2. จำลอง AI ตอบกลับกวนๆ (ดีเลย์เล็กน้อยให้ดูเนียน 0.5 วินาที)
+    setTimeout(() => {
+        // สุ่มคำตอบจากคลัง
+        const randomIndex = Math.floor(Math.random() * botAnswers.length);
+        const randomReply = botAnswers[randomIndex];
+
+        const aiParagraph = document.createElement("p");
+        aiParagraph.className = "ai-msg"; // เผื่อเอาไปแต่ง CSS แยกสี
+        aiParagraph.textContent = "🤖 AI สายกวน: " + randomReply;
+        container.appendChild(aiParagraph);
+
+        // สั่งให้กล่องแชทเลื่อนลงมาข้างล่างสุดโดยอัตโนมัติเวลามีข้อความใหม่
+        container.scrollTop = container.scrollHeight;
+    }, 500);
+}
+
 function kk() {
-    addNewText()
+    addNewText();
 }
 </script>
