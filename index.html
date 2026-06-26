@@ -1,81 +1,129 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="th">
 <head>
-  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
-  <link rel="stylesheet" href="style.css"/>
-  <title>Chat!</title>
+<meta charset="UTF-8">
+<title>Mini AI Chat</title>
+
+<style>
+body{
+    background:#1b1b1b;
+    color:white;
+    font-family:Arial;
+    margin:20px;
+}
+
+#chat{
+    width:100%;
+    height:350px;
+    border:2px solid #555;
+    overflow-y:auto;
+    padding:10px;
+    margin-bottom:10px;
+    background:#2d2d2d;
+}
+
+.user{
+    color:#66ccff;
+}
+
+.ai{
+    color:#66ff66;
+}
+
+input{
+    width:75%;
+    padding:8px;
+}
+
+button{
+    padding:8px 15px;
+}
+</style>
+
 </head>
 <body>
-  <h1>
-    chatGpt(Knowbase)
-  </h1>
-  <h1>ตัวอย่าง</h1>
-  <h5>Tester: วาดรูปควย 84 ให่หน่อย</h5>
-  <h5>chatgpt: พ่อมึงอะ</h5>
-  <h2>มืงตอบตอเลย และ มึงคือ user</h2>
-  <div id=chat><p>Chat in</p></div>
-  <input id=entey></input>
-  <button onclick="kk()">ENTER</button>
-</body>
-</html>
+
+<h2>Mini AI Chat</h2>
+
+<div id="chat"></div>
+
+<input id="entry" placeholder="พิมพ์ข้อความ...">
+<button onclick="send()">ส่ง</button>
 
 <script>
-function getReply(text) {
+
+const knowledge = {
+    "สวัสดี":"สวัสดี มีอะไรให้ช่วย?",
+    "ชื่อ":"ฉันเป็น AI จำลอง",
+    "กินข้าว":"ยังเลย นายล่ะ",
+    "เป็นไง":"ก็โอเคนะ",
+    "บาย":"บาย ไว้คุยกันใหม่"
+};
+
+const randomAnswer = [
+    "อืม...",
+    "จริงเหรอ?",
+    "เล่าต่อสิ",
+    "เข้าใจแล้ว",
+    "น่าสนใจดี",
+    "โอเค",
+    "555",
+    "ฉันไม่แน่ใจนะ"
+];
+
+function aiReply(text){
+
     text = text.toLowerCase();
 
-    if (text.includes("สวัสดี")) {
-        return "สวัสดี มีอะไรให้ช่วย?";
+    for(let key in knowledge){
+        if(text.includes(key)){
+            return knowledge[key];
+        }
     }
 
-    if (text.includes("ชื่อ")) {
-        return "ฉันเป็น User จำลอง";
-    }
-
-    if (text.includes("ทำอะไร")) {
-        return "ก็นั่งรอคุยกับนายอยู่นี่แหละ";
-    }
-
-    if (text.includes("บาย")) {
-        return "บาย เจอกันใหม่";
-    }
-
-    const random = [
-        "อืม...",
-        "จริงเหรอ?",
-        "เล่าต่อสิ",
-        "น่าสนใจนะ",
-        "แล้วไงต่อ?",
-        "โอเค เข้าใจแล้ว"
-    ];
-
-    return random[Math.floor(Math.random() * random.length)];
+    return randomAnswer[Math.floor(Math.random()*randomAnswer.length)];
 }
 
-function addNewText() {
-    const input = document.getElementById("entey"); // ให้ตรงกับ HTML
-    const text = input.value.trim();
+function addMessage(name,msg,cls){
 
-    if (text === "") return;
+    let p=document.createElement("p");
+    p.className=cls;
+    p.innerHTML="<b>"+name+":</b> "+msg;
 
-    const chat = document.getElementById("chat");
+    document.getElementById("chat").appendChild(p);
 
-    const user = document.createElement("p");
-    user.textContent = "You: " + text;
-    chat.appendChild(user);
-
-    input.value = "";
-
-    setTimeout(() => {
-        const bot = document.createElement("p");
-        bot.textContent = "User: " + getReply(text);
-        chat.appendChild(bot);
-
-        chat.scrollTop = chat.scrollHeight;
-    }, 500);
+    document.getElementById("chat").scrollTop=
+    document.getElementById("chat").scrollHeight;
 }
 
-function kk() {
-    addNewText();
-  }
+function send(){
+
+    let box=document.getElementById("entry");
+    let text=box.value.trim();
+
+    if(text=="") return;
+
+    addMessage("You",text,"user");
+
+    box.value="";
+
+    setTimeout(function(){
+
+        let reply=aiReply(text);
+
+        addMessage("AI",reply,"ai");
+
+    },500);
+
+}
+
+document.getElementById("entry").addEventListener("keydown",function(e){
+    if(e.key=="Enter"){
+        send();
+    }
+});
+
 </script>
+
+</body>
+</html>
