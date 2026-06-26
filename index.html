@@ -21,51 +21,61 @@
 </html>
 
 <script>
-// คลังคำตอบกวนๆ ของ AI
-const botAnswers = [
-    "เรื่องแค่นี้ยังต้องถามอีกเหรอ? ไปเปิด Google ไหม?",
-    "ยาวไป ไม่อ่าน พิมพ์ใหม่ดิ๊",
-    "ถามจัง ไม่ทำงานทำการเหรอเพื่อน?",
-    "คำถามน่าสนใจดีนะ แต่ฉันไม่อยากตอบอ่ะ",
-    "ว่าไงเจ้ามนุษย์เนื้อถุง มีอะไรให้รับใช้ล่ะ",
-    "[Error 404: สมองของ AI ไม่สามารถประมวลผลคำถามที่ไร้สาระขนาดนี้ได้]"
-];
+function getReply(text) {
+    text = text.toLowerCase();
+
+    if (text.includes("สวัสดี")) {
+        return "สวัสดี มีอะไรให้ช่วย?";
+    }
+
+    if (text.includes("ชื่อ")) {
+        return "ฉันเป็น User จำลอง";
+    }
+
+    if (text.includes("ทำอะไร")) {
+        return "ก็นั่งรอคุยกับนายอยู่นี่แหละ";
+    }
+
+    if (text.includes("บาย")) {
+        return "บาย เจอกันใหม่";
+    }
+
+    const random = [
+        "อืม...",
+        "จริงเหรอ?",
+        "เล่าต่อสิ",
+        "น่าสนใจนะ",
+        "แล้วไงต่อ?",
+        "โอเค เข้าใจแล้ว"
+    ];
+
+    return random[Math.floor(Math.random() * random.length)];
+}
 
 function addNewText() {
-    const inputElement = document.getElementById("entry"); // แก้คำสะกดตรงนี้ให้ตรงกับ HTML
-    const userText = inputElement.value.trim();
-    
-    // ถ้าไม่มีการพิมพ์อะไรเข้ามา ก็ไม่ต้องส่ง
-    if (userText === "") return;
+    const input = document.getElementById("entey"); // ให้ตรงกับ HTML
+    const text = input.value.trim();
 
-    const container = document.getElementById("chat");
+    if (text === "") return;
 
-    // 1. แสดงข้อความของฝั่ง User (เพื่อน)
-    const userParagraph = document.createElement("p");
-    userParagraph.className = "user-msg"; // เผื่อเอาไปแต่ง CSS แยกสี
-    userParagraph.textContent = "Friend: " + userText;
-    container.appendChild(userParagraph);
+    const chat = document.getElementById("chat");
 
-    // เคลียร์ช่องพิมพ์หลังจากส่งเสร็จ
-    inputElement.value = "";
+    const user = document.createElement("p");
+    user.textContent = "You: " + text;
+    chat.appendChild(user);
 
-    // 2. จำลอง AI ตอบกลับกวนๆ (ดีเลย์เล็กน้อยให้ดูเนียน 0.5 วินาที)
+    input.value = "";
+
     setTimeout(() => {
-        // สุ่มคำตอบจากคลัง
-        const randomIndex = Math.floor(Math.random() * botAnswers.length);
-        const randomReply = botAnswers[randomIndex];
+        const bot = document.createElement("p");
+        bot.textContent = "User: " + getReply(text);
+        chat.appendChild(bot);
 
-        const aiParagraph = document.createElement("p");
-        aiParagraph.className = "ai-msg"; // เผื่อเอาไปแต่ง CSS แยกสี
-        aiParagraph.textContent = "🤖 AI สายกวน: " + randomReply;
-        container.appendChild(aiParagraph);
-
-        // สั่งให้กล่องแชทเลื่อนลงมาข้างล่างสุดโดยอัตโนมัติเวลามีข้อความใหม่
-        container.scrollTop = container.scrollHeight;
+        chat.scrollTop = chat.scrollHeight;
     }, 500);
 }
 
 function kk() {
     addNewText();
-}
+  }
 </script>
